@@ -8,6 +8,9 @@ pipeline {
         stage('Init') {
             steps {
                 sh'''
+                    cd 01-vpc
+                    ls -ltr
+                    pwd
                     terraform init
                 '''
             }
@@ -15,7 +18,27 @@ pipeline {
         stage('Plan') {
             steps {
                 sh'''
+                    ls -ltr
+                    pwd
+                    cd 01-vpc
                     terraform plan
+                '''
+            }
+        }
+        stage('Approve') {
+            steps{
+                input "Shall I apply?"
+            }
+        }
+
+        stage('Apply') {
+            steps{
+                
+                sh '''
+                    pwd
+                    ls -ltr
+                    cd 01-vpc
+                    terraform apply -auto-approve
                 '''
             }
         }
